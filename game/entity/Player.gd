@@ -4,7 +4,7 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 
-export var speed = 70
+export var speed = 120
 var input_motion = Vector2(0,0)
 var zero = Vector2(0,0)
 var moving = false
@@ -13,8 +13,11 @@ var move_delta = Vector2(0,0)
 var move_direction = Vector2(0,0)
 var move_this_turn = Vector2(0,0)
 var dead = false
-onready var bomb_count_field = get_node("/root/Game/AdjacentBombCount")
-onready var banner_label = get_node("/root/Game/Banner")
+var win = false
+var lock_controls = false
+onready var bomb_count_field = get_node("/root/Game/UI/AdjacentBombCount")
+onready var banner_label = get_node("/root/Game/UI/Banner")
+onready var game = get_node("/root/Game");
 var input_mapping = {
 	"move_left": Vector2(-1,0),
 	"move_right": Vector2(1,0),
@@ -30,15 +33,20 @@ func _ready():
 func _physics_process(delta):
 	if dead:
 		if Input.is_action_just_pressed("ui_accept"):
-			get_tree().reload_current_scene()
-			return
+			game.reload_level()
 		return
-	
+
+	if win:
+		if Input.is_action_just_pressed("ui_accept"):
+			game.next_level()
+		return
+
 	input_motion = zero
-	for input in input_keys:
-		if Input.is_action_pressed(input):
-			input_motion += input_mapping[input]
-			break
+	if not lock_controls:
+		for input in input_keys:
+			if Input.is_action_pressed(input):
+				input_motion += input_mapping[input]
+				break
 
 	if moving:
 		move_this_turn = move_and_slide(speed * move_direction) * delta
@@ -73,11 +81,12 @@ func _physics_process(delta):
 	
 
 func _on_TouchArea_area_entered(area):
-	print_debug(area)
 	if area.is_in_group("Bomb"):
+		lock_controls = true
 		area.trigger()
 		$DeathTimer.start(.3)
 	elif area.is_in_group("Goal"):
+		lock_controls = true
 		$WinTimer.start(.5)
 		
 
@@ -90,7 +99,7 @@ func _on_DeathTimer_timeout():
 	$Sprite.visible = false
 
 func _on_WinTimer_timeout():
-	dead = true
+	win = true
 	banner_label.visible = true
 	banner_label.text = "YOU WIN!\nPress ENTER to continue"
 	for bomb in get_tree().get_nodes_in_group("Bomb"):
