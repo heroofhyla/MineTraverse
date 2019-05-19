@@ -12,13 +12,14 @@ var motion_this_frame = null
 var move_delta = Vector2(0,0)
 var move_direction = Vector2(0,0)
 var move_this_turn = Vector2(0,0)
+onready var bomb_count_field = get_node("/root/Game/AdjacentBombCount")
 var input_mapping = {
 	"move_left": Vector2(-1,0),
 	"move_right": Vector2(1,0),
 	"move_up": Vector2(0,-1),
 	"move_down": Vector2(0,1),
 	}
-
+var adjacent_bomb_count = 0
 var input_keys = input_mapping.keys()
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -54,11 +55,18 @@ func _physics_process(delta):
 					position.y = (int(position.y + .5) / 24) * 24 + 12
 					move_delta.x -= max(0, abs(move_delta.x)) * sign(move_delta.x)
 					move_delta.y = 0
-				
-				
-	
-	elif input_motion != zero:
-		move_and_slide(speed * input_motion)
-		move_direction = input_motion
-		moving = true;
+	else:
+		if adjacent_bomb_count == -1:
+			adjacent_bomb_count = 0
+			for area in $BombDetectArea.get_overlapping_areas():
+				if area.is_in_group("Bomb"):
+					adjacent_bomb_count += 1
+			bomb_count_field.text = str(adjacent_bomb_count)
+
+		if input_motion != zero:
+			move_and_slide(speed * input_motion)
+			move_direction = input_motion
+			adjacent_bomb_count = -1
+			bomb_count_field.text = "?"
+			moving = true;
 	
