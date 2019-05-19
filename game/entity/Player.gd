@@ -24,7 +24,7 @@ var input_mapping = {
 	"move_up": Vector2(0,-1),
 	"move_down": Vector2(0,1),
 	}
-var adjacent_bomb_count = 0
+var adjacent_bomb_count = -1
 var input_keys = input_mapping.keys()
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -57,3 +57,6 @@ z_index = 1
 
 [node name="Goal" parent="." instance=ExtResource( 4 )]
 position = Vector2( 396, 228 )
+
+[node name="Bomb" parent="." instance=ExtResource( 2 )]
+position = Vector2( 420, 228 )
