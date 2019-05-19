@@ -57,6 +57,7 @@ func start_level():
 	$UI/AdjacentBombCount.text = "0"
 	current_level = load(levels[level_index]).instance()
 	get_tree().get_root().add_child(current_level)
+
 	
 func next_level():
 	level_index += 1

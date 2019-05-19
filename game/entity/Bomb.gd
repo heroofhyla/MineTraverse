@@ -1,5 +1,6 @@
 extends Area2D
 
+onready var sfx_player = get_node("/root/Game/ExplosionPlayer")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -22,5 +23,6 @@ func reveal():
 	$Sprite.visible = true
 
 func _on_ExplodeTimer_timeout():
+	sfx_player.play()
 	$ExplosionSprite.visible = true
 	pass # Replace with function body.

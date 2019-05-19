@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fanfare.ogg-42cc3a13a31371159b66388e48c2d1a2.oggstr"
+
+[deps]
+
+source_file="res://audio/fanfare.ogg"
+dest_files=[ "res://.import/fanfare.ogg-42cc3a13a31371159b66388e48c2d1a2.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

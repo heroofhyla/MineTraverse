@@ -17,7 +17,8 @@ var win = false
 var lock_controls = false
 onready var bomb_count_field = get_node("/root/Game/UI/AdjacentBombCount")
 onready var banner_label = get_node("/root/Game/UI/Banner")
-onready var game = get_node("/root/Game");
+onready var game = get_node("/root/Game")
+onready var fanfare_player = get_node("/root/Game/FanfarePlayer")
 var input_mapping = {
 	"move_left": Vector2(-1,0),
 	"move_right": Vector2(1,0),
@@ -99,6 +100,7 @@ func _on_DeathTimer_timeout():
 	$Sprite.visible = false
 
 func _on_WinTimer_timeout():
+	fanfare_player.play()
 	win = true
 	banner_label.visible = true
 	banner_label.text = "YOU WIN!\nPress ENTER to continue"
