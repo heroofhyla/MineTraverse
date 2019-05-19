@@ -49,6 +49,6 @@ end
 tile_output.chomp!(", ")
 tile_output << " )\n\n"
 
-output = File.read("template/level_header.txt")
+output = File.read("res/level_header.txt")
 output << "\n" << tile_output << entity_output
 File.open(ARGV[1], 'w'){|outfile| outfile.write output}
